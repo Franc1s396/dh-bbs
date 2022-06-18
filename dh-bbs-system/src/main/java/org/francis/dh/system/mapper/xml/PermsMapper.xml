@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.francis.dh.system.mapper.PermsMapper">
+
+    <select id="getPermsByUid" resultType="org.francis.dh.common.core.entity.Perms">
+        SELECT p.id, p.perms_name
+        FROM sys_perms p
+                 LEFT JOIN sys_role_perms rp ON rp.perms_id = p.id
+                 LEFT JOIN sys_user_role ur ON ur.role_id = rp.role_id
+        WHERE ur.user_id = #{userId}
+          AND p.is_deleted = 0
+    </select>
+</mapper>

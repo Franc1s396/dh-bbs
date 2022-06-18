@@ -22,6 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+        <lombok.version>1.18.20</lombok.version>
         <druid.version>1.2.8</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
         <p6spy.version>3.8.2</p6spy.version>
@@ -33,9 +34,10 @@
         <commons.io.version>2.11.0</commons.io.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <commons.collections.version>3.2.2</commons.collections.version>
-        <poi.version>4.4.0</poi.version>
+        <poi.version>3.1.1</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>3.8.2</jwt.version>
+        <mysql.version>8.0.28</mysql.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -48,6 +50,11 @@
                 <scope>import</scope>
             </dependency>
             <!-- 阿里数据库连接池 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
@@ -77,6 +84,13 @@
                 <version>${mybatis-spring-boot.version}</version>
             </dependency>
 
+            <!--lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
             <!-- 获取系统信息 -->
             <dependency>
                 <groupId>com.github.oshi</groupId>
@@ -100,7 +114,7 @@
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
+                <version>${swagger.version}</version>
             </dependency>
 
             <!-- io常用工具类 -->
@@ -119,8 +133,8 @@
 
             <!-- excel工具 -->
             <dependency>
-                <groupId>cn.afterturn</groupId>
-                <artifactId>easypoi-spring-boot-starter</artifactId>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
                 <version>${poi.version}</version>
             </dependency>
 

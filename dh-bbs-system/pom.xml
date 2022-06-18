@@ -11,9 +11,12 @@
 
     <artifactId>dh-bbs-system</artifactId>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.francis</groupId>
+            <artifactId>dh-bbs-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
