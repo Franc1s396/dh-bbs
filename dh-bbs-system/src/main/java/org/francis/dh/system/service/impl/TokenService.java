@@ -74,9 +74,10 @@ public class TokenService {
                 DecodedJWT decodedJWT = jwtVerifier.verify(token);
                 Claim claim = decodedJWT.getClaim(Constants.LOGIN_USER_KEY);
                 String uuid = claim.asString();
-                String userKey = Constants.LOGIN_USER_KEY + uuid;
+                String userKey = getTokenKey(uuid);
                 return redisCache.getCacheObject(userKey);
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ServiceException("请求信息出错");
             }
         }
