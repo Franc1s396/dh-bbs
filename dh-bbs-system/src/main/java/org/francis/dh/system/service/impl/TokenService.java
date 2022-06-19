@@ -14,6 +14,7 @@ import org.francis.dh.common.core.redis.RedisCache;
 import org.francis.dh.common.exception.ServiceException;
 import org.francis.dh.common.utils.StringUtils;
 import org.francis.dh.common.utils.UUIDUtils;
+import org.francis.dh.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +55,9 @@ public class TokenService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取用户身份信息
@@ -103,11 +108,17 @@ public class TokenService {
      * @return
      */
     public String createToken(LoginUser loginUser) {
-        refreshToken(loginUser);
+        String uuid = UUIDUtils.get32UUID();
+        loginUser.setToken(uuid);
         setUserAgent(loginUser);
+        refreshToken(loginUser);
+        User user = userService.getById(loginUser.getUserId());
+        user.setLoginDate(LocalDateTime.now());
+        user.setLoginIp(loginUser.getIpaddr());
+        userService.updateById(user);
         return JWT.create()
                 .withSubject(loginUser.getUsername())
-                .withClaim(Constants.LOGIN_USER_KEY, UUIDUtils.get32UUID())
+                .withClaim(Constants.LOGIN_USER_KEY, uuid)
                 .withExpiresAt(new Date(System.currentTimeMillis() + expireTime * 60 * 1000))
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
@@ -136,6 +147,7 @@ public class TokenService {
         loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * 60 * 1000);
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
+        loginUser.getUser().setPassword(null);
         redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
@@ -145,8 +157,18 @@ public class TokenService {
      * @param loginUser 登录信息
      */
     public void setUserAgent(LoginUser loginUser) {
-        String ip = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getRemoteAddr();
-        loginUser.setIpaddr(ip);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String ipAddress = request.getHeader("x-forwarded-for");
+        if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("Proxy-Client-IP");
+        }
+        if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getRemoteAddr();
+        }
+        loginUser.setIpaddr(ipAddress);
     }
 
     /**

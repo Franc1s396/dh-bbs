@@ -38,10 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user=userMapper.getUserByUsername(username);
         if (StringUtils.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
-            throw new ServiceException("用户名或密码不正确");
-        } else if (user.getUserEnabled()==1) {
-            log.info("登录用户：{} 已被停用.", username);
-            throw new ServiceException("对不起，您的账号：" + username + " 已停用");
+            throw new UsernameNotFoundException("用户名或者密码输入错误，请重新输入!");
         }
         return createLoginUser(user);
     }

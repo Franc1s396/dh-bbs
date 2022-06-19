@@ -4,10 +4,12 @@
     <resultMap id="UserWithRole" type="org.francis.dh.common.core.entity.User">
         <id property="id" column="uid"/>
         <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
         <result property="password" column="password"/>
         <result property="nickName" column="nickname"/>
-        <result property="email" column="email"/>
-        <result property="phone" column="phone"/>
+        <result property="avatar" column="avatar"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginDate" column="login_date"/>
         <result property="userEnabled" column="user_enabled"/>
         <result property="gmtCreate" column="gmt_create"/>
         <collection property="roles" ofType="org.francis.dh.common.core.entity.Role">
@@ -17,22 +19,25 @@
         </collection>
     </resultMap>
     <sql id="UserWithRole">
-        SELECT u.id AS uid,
+        SELECT u.id        AS uid,
                u.email,
                u.phone,
                u.password,
                u.nick_name AS nickname,
+               u.avatar,
+               u.login_ip,
+               u.login_date,
                u.user_enabled,
                u.gmt_create,
-               r.id AS rid,
-               r.`name` AS rname,
-               r.zh_name AS rzhname
+               r.id        AS rid,
+               r.`name`    AS rname,
+               r.zh_name   AS rzhname
         FROM sys_user u
                  LEFT JOIN sys_user_role ur ON ur.user_id = u.id
                  LEFT JOIN sys_role r ON r.id = ur.role_id
     </sql>
     <select id="getUserByUsername" resultMap="UserWithRole">
-    <include refid="UserWithRole"/>
+        <include refid="UserWithRole"/>
         WHERE u.email=#{username}
     </select>
 </mapper>

@@ -1,5 +1,6 @@
 package org.francis.dh.framework.security;
 
+import org.francis.dh.common.core.entity.LoginUser;
 import org.francis.dh.common.core.entity.User;
 import org.francis.dh.system.service.PermsService;
 import org.francis.dh.system.service.impl.TokenService;
@@ -25,15 +26,13 @@ import java.util.Objects;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
-    @Autowired
-    private PermsService permsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        User user = tokenService.getUser(request);
+        LoginUser user = tokenService.getLoginUser(request);
         if (Objects.nonNull(user)) {
-            user.setPermissions(permsService.getPerms(user));
+            tokenService.verifyToken(user);
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

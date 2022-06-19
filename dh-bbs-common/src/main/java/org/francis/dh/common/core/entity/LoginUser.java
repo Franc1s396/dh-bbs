@@ -1,11 +1,14 @@
 package org.francis.dh.common.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 登录用户身份权限
@@ -67,11 +70,13 @@ public class LoginUser implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return user.getPassword();
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return user.getEmail();
     }
@@ -80,6 +85,7 @@ public class LoginUser implements UserDetails {
      * 账户是否未过期,过期无法验证
      */
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -90,6 +96,7 @@ public class LoginUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
@@ -100,6 +107,7 @@ public class LoginUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
@@ -110,12 +118,13 @@ public class LoginUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return user.getUserEnabled()==0;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }

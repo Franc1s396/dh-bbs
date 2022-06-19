@@ -2,6 +2,7 @@ package org.francis.dh.common.utils;
 
 
 import org.francis.dh.common.constant.HttpStatus;
+import org.francis.dh.common.core.entity.LoginUser;
 import org.francis.dh.common.core.entity.User;
 import org.francis.dh.common.exception.ServiceException;
 import org.springframework.security.core.Authentication;
@@ -38,9 +39,9 @@ public class SecurityUtils {
     /**
      * 获取用户
      **/
-    public static User getLoginUser() {
+    public static LoginUser getLoginUser() {
         try {
-            return (User) getAuthentication().getPrincipal();
+            return (LoginUser) getAuthentication().getPrincipal();
         } catch (Exception e) {
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }

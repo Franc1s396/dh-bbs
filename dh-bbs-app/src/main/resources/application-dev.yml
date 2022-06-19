@@ -29,4 +29,31 @@ spring:
     # 通过 connection-properties 属性打开 mergeSql 功能；慢 SQL 记录
     connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
 
+  redis:
+    database: 2
+    host: 120.24.223.36
+    port: 6379
+    password: ma321388
+    lettuce:
+      pool:
+        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
 
+mybatis-plus:
+  mapper-locations: classpath*:org/francis/**/mapper/xml/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    org:
+      francis:
+        dh:
+          system:
+            mapper: debug

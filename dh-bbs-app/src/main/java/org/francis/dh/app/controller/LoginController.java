@@ -1,5 +1,6 @@
 package org.francis.dh.app.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -7,9 +8,13 @@ import org.francis.dh.common.constant.Constants;
 import org.francis.dh.common.core.entity.LoginBody;
 import org.francis.dh.common.core.entity.RegisterBody;
 import org.francis.dh.common.core.entity.RespResult;
+import org.francis.dh.common.core.entity.User;
 import org.francis.dh.common.core.redis.RedisCache;
+import org.francis.dh.system.service.UserService;
 import org.francis.dh.system.service.impl.LoginService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,20 +40,39 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private Producer producer;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @ApiOperation(value = "登录")
     @PostMapping("/login")
     public RespResult login(@Valid @RequestBody LoginBody loginBody){
-        return RespResult.ok();
+        String token=loginService.login(loginBody);
+        return RespResult.ok().data("token",token);
     }
 
     @ApiOperation(value = "注册")
     @PostMapping("/register")
     public RespResult register(@Valid @RequestBody RegisterBody registerBody){
-        return RespResult.ok();
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getEmail,registerBody.getEmail());
+        if (userService.getOne(queryWrapper)!=null) {
+            return RespResult.error().message("邮箱已被占用");
+        }
+        queryWrapper.clear();
+        queryWrapper.eq(User::getPhone,registerBody.getPhone());
+        if (userService.getOne(queryWrapper)!=null) {
+            return RespResult.error().message("手机号码已被占用");
+        }
+        User user = new User();
+        BeanUtils.copyProperties(registerBody,user);
+        user.setPassword(passwordEncoder.encode(registerBody.getPassword()));
+        userService.save(user);
+        return RespResult.ok().message("注册成功");
     }
 
     /**
