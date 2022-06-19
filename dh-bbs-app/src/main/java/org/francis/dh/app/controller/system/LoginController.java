@@ -1,4 +1,4 @@
-package org.francis.dh.app.controller;
+package org.francis.dh.app.controller.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.code.kaptcha.Producer;
