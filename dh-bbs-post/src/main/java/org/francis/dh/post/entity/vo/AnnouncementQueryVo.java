@@ -28,4 +28,7 @@ public class AnnouncementQueryVo {
 
     @ApiModelProperty(value = "公告创建人编号")
     private Long createUser;
+
+    @ApiModelProperty(value = "播放")
+    private Integer play;
 }

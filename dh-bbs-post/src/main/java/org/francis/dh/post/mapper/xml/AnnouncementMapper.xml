@@ -4,9 +4,10 @@
 
     <select id="getAnnouncements" resultType="org.francis.dh.post.entity.Announcement">
         SELECT id,
-               content,
-               create_user,
-               gmt_create
+        content,
+        create_user,
+        is_played,
+        gmt_create
         FROM b_announcement
         WHERE is_deleted=0
         <if test="announcementQueryVo.id!=null">
@@ -17,6 +18,9 @@
         </if>
         <if test="announcementQueryVo.createUser!=null">
             create_user=#{announcementQueryVo.createUser}
+        </if>
+        <if test="announcementQueryVo.play!=null">
+            is_play=#{announcementQueryVo.play}
         </if>
     </select>
 </mapper>
