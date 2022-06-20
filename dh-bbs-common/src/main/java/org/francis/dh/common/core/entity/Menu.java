@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,7 +48,8 @@ public class Menu implements Serializable {
 
     @ApiModelProperty(value = "逻辑删除")
     @TableLogic
-    private Boolean isDeleted;
+    @TableField(value = "is_deleted")
+    private Boolean deleted;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
@@ -56,5 +59,7 @@ public class Menu implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
-
+    @ApiModelProperty(value = "子菜单")
+    @TableField(exist = false)
+    private List<Menu> children;
 }

@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.francis.dh.post.mapper.AnnouncementMapper">
 
+    <select id="getAnnouncements" resultType="org.francis.dh.post.entity.Announcement">
+        SELECT id,
+               content,
+               create_user,
+               gmt_create
+        FROM b_announcement
+        WHERE is_deleted=0
+        <if test="announcementQueryVo.id!=null">
+            id=#{announcementQueryVo.id}
+        </if>
+        <if test="announcementQueryVo.content!=null">
+            content LIKE CONCAT('%',#{announcementQueryVo.id},'%')
+        </if>
+        <if test="announcementQueryVo.createUser!=null">
+            create_user=#{announcementQueryVo.createUser}
+        </if>
+    </select>
 </mapper>

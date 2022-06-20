@@ -2,6 +2,7 @@ package org.francis.dh.post.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,8 +34,14 @@ public class Announcement implements Serializable {
     @ApiModelProperty(value = "公告创建人编号")
     private Long createUser;
 
+    @ApiModelProperty(value = "播放(0:不播放 1:播放)")
+    @TableField(value = "is_played")
+    private Integer play;
+
     @ApiModelProperty(value = "逻辑删除")
-    private Boolean isDeleted;
+    @TableLogic
+    @TableField(value = "is_deleted")
+    private Boolean deleted;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
