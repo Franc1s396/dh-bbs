@@ -12,7 +12,9 @@
         <module>dh-bbs-common</module>
         <module>dh-bbs-system</module>
         <module>dh-bbs-framework</module>
-        <module>dh-bbs-app</module>
+        <module>dh-bbs-admin</module>
+        <module>dh-bbs-post</module>
+        <module>dh-bbs-quartz</module>
     </modules>
 
     <properties>

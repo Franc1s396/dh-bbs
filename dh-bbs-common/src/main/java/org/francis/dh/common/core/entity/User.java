@@ -4,18 +4,12 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -51,6 +45,9 @@ public class User implements Serializable{
 
     @ApiModelProperty(value = "头像地址")
     private String avatar;
+
+    @ApiModelProperty(value = "性别")
+    private String sex;
 
     @ApiModelProperty(value = "用户封禁状态(0:正常 1:封禁)")
     private Integer userEnabled;
