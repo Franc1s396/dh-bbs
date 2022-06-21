@@ -38,6 +38,7 @@ public class AnnouncementController {
 
     @GetMapping("")
     @ApiOperation(value = "查询发布的公告")
+    @PreAuthorize("@Perms.hasPerm('admin:announcement:get')")
     public RespResult getPlayAnnouncement(){
         LambdaQueryWrapper<Announcement> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Announcement::getPlay,1);

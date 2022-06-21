@@ -38,6 +38,7 @@ public class BoardController {
      * @return 板块信息
      */
     @GetMapping("/page")
+    @PreAuthorize("@Perms.hasPerm('admin:board:list')")
     @ApiOperation(value = "分页查询板块")
     public RespResult getBoards(@Valid BoardQueryVo boardQueryVo){
         Page<Board> boardPage = new Page<>(boardQueryVo.getPageNo(), boardQueryVo.getPageSize());
@@ -46,18 +47,21 @@ public class BoardController {
     }
 
     @PostMapping("")
+    @PreAuthorize("@Perms.hasPerm('admin:board:add')")
     @ApiOperation(value = "添加板块")
     public RespResult addBoard(@Valid @RequestBody BoardAddVo boardAddVo){
         return RespResult.ok();
     }
 
     @PutMapping("")
+    @PreAuthorize("@Perms.hasPerm('admin:board:update')")
     @ApiOperation(value = "更新板块")
     public RespResult updateBoard(@Valid @RequestBody BoardUdpVo boardUdpVo){
         return RespResult.ok();
     }
 
     @DeleteMapping("")
+    @PreAuthorize("@Perms.hasPerm('admin:board:delete')")
     @ApiOperation(value = "删除板块")
     public RespResult deleteBoard(){
         return RespResult.ok();
