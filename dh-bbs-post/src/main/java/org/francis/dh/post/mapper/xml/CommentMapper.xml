@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.francis.dh.post.mapper.CommentMapper">
-
+    <resultMap id="Comment" type="org.francis.dh.post.entity.dto.CommentDto">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickname" column="nick_name"/>
+        <result property="postId" column="post_id"/>
+        <result property="content" column="content"/>
+        <result property="top" column="is_top"/>
+        <result property="gmtCreate" column="gmt_create"/>
+    </resultMap>
+    <select id="getCommentByPId" resultType="org.francis.dh.post.entity.dto.CommentDto">
+        SELECT bc.id,
+               bc.post_id,
+               bc.user_id,
+                su.nick_name,
+               bc.content,
+               bc.is_top,
+               bc.is_deleted,
+               bc.gmt_create
+        FROM b_comment bc
+                 LEFT JOIN sys_user su ON su.id = bc.user_id
+        WHERE bc.is_deleted = 0
+          AND su.is_deleted = 0
+          AND bc.id = #{commentQueryVo.id}
+    </select>
 </mapper>

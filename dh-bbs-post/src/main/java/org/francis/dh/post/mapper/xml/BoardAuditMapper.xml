@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.francis.dh.post.mapper.BoardAuditMapper">
-
+    <resultMap id="BoardAudit" type="org.francis.dh.post.entity.dto.BoardAuditDto">
+        <id property="id" column=""/>
+        <result property="name" column=""/>
+        <result property="createUser" column=""/>
+        <result property="createUserNickname" column=""/>
+        <result property="auditUser" column=""/>
+        <result property="auditUserNickname" column=""/>
+        <result property="auditStatus" column=""/>
+        <result property="isDeleted" column=""/>
+        <result property="gmtCreate" column=""/>
+        <result property="gmtModified" column=""/>
+    </resultMap>
+    <select id="getBoardAuditPage" resultType="org.francis.dh.post.entity.dto.BoardAuditDto">
+        SELECT bba.id,
+               bba.name,
+               bba.create_user,
+               su.nick_name,
+               bba.audit_user,
+               su1.nick_name,
+               bba.audit_status,
+               bba.is_deleted,
+               bba.gmt_create,
+               bba.gmt_modified
+        FROM b_board_audit bba
+                 LEFT JOIN sys_user su ON su.id = bba.create_user
+                 LEFT JOIN sys_user su1 ON su1.id = bba.audit_user
+        WHERE bba.is_deleted=0 AND su.is_deleted=0 AND su1.is_deleted=0
+        <if test="boardAuditQueryVo.id!=null">
+            bba.id=#{boardAuditQueryVo.id}
+        </if>
+        <if test="boardAuditQueryVo.name!=null">
+            bba.name LIKE CONCAT('%',#{boardAuditQueryVo.name},'%')
+        </if>
+        <if test="boardAuditQueryVo.createUser!=null">
+            bba.createUser=#{boardAuditQueryVo.createUser}
+        </if>
+        <if test="boardAuditQueryVo.auditUser!=null">
+            bba.auditUser=#{boardAuditQueryVo.auditUser}
+        </if>
+        <if test="boardAuditQueryVo.auditStatus!=null">
+            bba.auditStatus=#{boardAuditQueryVo.auditStatus}
+        </if>
+    </select>
 </mapper>

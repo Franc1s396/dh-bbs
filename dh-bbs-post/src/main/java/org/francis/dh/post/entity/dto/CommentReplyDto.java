@@ -1,33 +1,23 @@
-package org.francis.dh.post.entity;
+package org.francis.dh.post.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
- * <p>
- *
- * </p>
- *
- * @author francis
- * @since 2022-06-19
+ * @author Franc1s
+ * @date 2022/6/22
+ * @apiNote
  */
+@ApiModel("评论回复DTO")
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("b_comment_reply")
-@ApiModel(value="CommentReply对象", description="")
-public class CommentReply implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class CommentReplyDto {
     @ApiModelProperty(value = "评论回复编号")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -38,8 +28,8 @@ public class CommentReply implements Serializable {
     @ApiModelProperty(value = "用户编号")
     private Long userId;
 
-    @ApiModelProperty(value = "用户用户昵称")
-    private String userNickname;
+    @ApiModelProperty(value = "用户姓名")
+    private Long userNickname;
 
     @ApiModelProperty(value = "评论编号")
     private Long commentId;
@@ -57,12 +47,5 @@ public class CommentReply implements Serializable {
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
-
-
 }

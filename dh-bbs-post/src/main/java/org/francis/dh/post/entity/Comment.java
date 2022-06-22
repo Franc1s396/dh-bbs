@@ -35,11 +35,14 @@ public class Comment implements Serializable {
     @ApiModelProperty(value = "帖子编号")
     private Long postId;
 
+    @ApiModelProperty(value = "用户编号")
+    private Long userId;
+
     @ApiModelProperty(value = "评论内容")
     private String content;
 
     @ApiModelProperty(value = "是否置顶")
-    private Boolean isTop;
+    private Boolean top;
 
     @ApiModelProperty(value = "逻辑删除")
     private Boolean isDeleted;

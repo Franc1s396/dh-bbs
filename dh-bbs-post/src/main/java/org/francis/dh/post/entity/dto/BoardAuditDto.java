@@ -1,31 +1,21 @@
-package org.francis.dh.post.entity;
+package org.francis.dh.post.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
- * <p>
- *
- * </p>
- *
- * @author francis
- * @since 2022-06-19
+ * @author Franc1s
+ * @date 2022/6/22
+ * @apiNote
  */
+@ApiModel("板块审核DTO")
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("b_board_audit")
-@ApiModel(value="BoardAudit对象", description="")
-public class BoardAudit implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class BoardAuditDto {
     @ApiModelProperty(value = "板块审核编号")
     private Long id;
 
@@ -35,8 +25,14 @@ public class BoardAudit implements Serializable {
     @ApiModelProperty(value = "板块申请人编号")
     private Long createUser;
 
+    @ApiModelProperty(value = "板块申请人昵称")
+    private String createUserNickname;
+
     @ApiModelProperty(value = "板块审核人编号")
     private Long auditUser;
+
+    @ApiModelProperty(value = "板块审核人昵称")
+    private String auditUserNickname;
 
     @ApiModelProperty(value = "审核状态(0:未审核 1:已通过 2:未通过)")
     private Integer auditStatus;
@@ -45,12 +41,8 @@ public class BoardAudit implements Serializable {
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
-
-
 }
