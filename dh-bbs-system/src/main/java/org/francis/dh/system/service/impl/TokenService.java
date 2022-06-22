@@ -4,11 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.RequestContext;
 import org.francis.dh.common.constant.Constants;
 import org.francis.dh.common.core.entity.LoginUser;
+import org.francis.dh.common.core.entity.RespResult;
 import org.francis.dh.common.core.entity.User;
 import org.francis.dh.common.core.redis.RedisCache;
 import org.francis.dh.common.exception.ServiceException;
@@ -22,6 +26,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +40,7 @@ import java.util.concurrent.TimeUnit;
  * @apiNote
  */
 @Service
+@Slf4j
 public class TokenService {
     /**
      * 令牌自定义标识
@@ -59,12 +66,15 @@ public class TokenService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     /**
      * 获取用户身份信息
      *
      * @return 用户信息
      */
-    public LoginUser getLoginUser(HttpServletRequest request) {
+    public LoginUser getLoginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 获取请求携带的令牌
         String token = getToken(request);
         if (StringUtils.isNotEmpty(token)) {
@@ -77,8 +87,6 @@ public class TokenService {
                 String userKey = getTokenKey(uuid);
                 return redisCache.getCacheObject(userKey);
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new ServiceException("请求信息出错");
             }
         }
         return null;
@@ -120,7 +128,6 @@ public class TokenService {
         return JWT.create()
                 .withSubject(loginUser.getUsername())
                 .withClaim(Constants.LOGIN_USER_KEY, uuid)
-                .withExpiresAt(new Date(System.currentTimeMillis() + expireTime * 60 * 1000))
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
 

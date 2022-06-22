@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.francis.dh.post.mapper.BoardMapper">
-
+    <resultMap id="BoardDto" type="org.francis.dh.post.entity.dto.BoardDto">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="nickname" column="nick_name"/>
+        <result property="gmtCreate" column="gmt_create"/>
+    </resultMap>
+    <select id="getBoards" resultType="org.francis.dh.post.entity.Board">
+        SELECT bb.id,
+               bb.name,
+               su.nick_name,
+               bb.create_user,
+               bb.gmt_create
+        FROM b_board bb
+            LEFT JOIN sys_user su ON su.id=bb.create_user
+        WHERE bb.is_deleted=0 AND su.is_deleted=0
+        <if test="boardQueryVo.id!=null">
+            AND bb.id=#{boardQueryVo.id}
+        </if>
+        <if test="boardQueryVo.name!=null">
+            AND bb.name LIKE CONCAT('%',#{boardQueryVo.name},'%')
+        </if>
+    </select>
 </mapper>

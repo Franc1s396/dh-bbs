@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.francis.dh.post.mapper.PostMapper">
+    <resultMap id="PostPage" type="org.francis.dh.post.entity.dto.PostDto">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickname" column="nick_name"/>
+        <result property="boardId" column="board_id"/>
+        <result property="boardName" column="board_name"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="cover" column="cover"/>
+        <result property="isTop" column="is_top"/>
+        <result property="gmtCreate" column="gmt_create"/>
+    </resultMap>
+    <select id="getPostPage" resultMap="PostPage">
+        SELECT bp.id,
+               bp.user_id,
+               su.nick_name,
+               bp.board_id,
+               bb.name AS board_name,
+               bp.title,
+               LEFT(bp.content,50) AS content,
+               bp.cover,
+               bp.is_top,
+               bp.gmt_create
+        FROM b_post bp
+                 LEFT JOIN sys_user su ON su.id = bp.user_id
+                 LEFT JOIN b_board bb ON bb.id = bp.board_id
+        WHERE bp.is_deleted=0 AND su.is_deleted=0 AND bb.is_deleted=0
+        <if test="postQueryVo.id!=null">
+            AND bp.id=#{postQueryVo.id}
+        </if>
+        <if test="postQueryVo.userId!=null">
+            AND bp.user_id=#{postQueryVo.userId}
+        </if>
+        <if test="postQueryVo.boardId!=null">
+            AND bp.board_id=#{postQueryVo.boardId}
+        </if>
+        <if test="postQueryVo.title!=null">
+            AND bp.title LIKE CONCAT('%',#{postQueryVo.title},'%')
+        </if>
+        <if test="postQueryVo.content!=null">
+            AND bp.content LIKE CONCAT('%',#{postQueryVo.content},'%')
+        </if>
+        <if test="postQueryVo.top!=null">
+            AND bp.is_top=#{top}
+        </if>
+    </select>
 
+    <select id="getPostById" resultMap="PostPage">
+        SELECT bp.id,
+               bp.user_id,
+               su.nick_name,
+               bp.board_id,
+               bb.name AS board_name,
+               bp.title,
+               bp.content,
+               bp.cover,
+               bp.is_top,
+               bp.gmt_create
+        FROM b_post bp
+                 LEFT JOIN sys_user su ON su.id = bp.user_id
+                 LEFT JOIN b_board bb ON bb.id = bp.board_id
+        WHERE bp.is_deleted=0 AND su.is_deleted=0 AND bb.is_deleted=0
+    </select>
 </mapper>

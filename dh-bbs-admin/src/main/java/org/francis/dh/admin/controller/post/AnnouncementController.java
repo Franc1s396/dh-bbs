@@ -38,7 +38,7 @@ public class AnnouncementController {
 
     @GetMapping("")
     @ApiOperation(value = "查询发布的公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:get')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:get')")
     public RespResult getPlayAnnouncement(){
         LambdaQueryWrapper<Announcement> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Announcement::getPlay,1);
@@ -54,7 +54,7 @@ public class AnnouncementController {
      */
     @GetMapping("/page")
     @ApiOperation(value = "分页查询公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:list')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:list')")
     public RespResult getAnnouncements(@Valid AnnouncementQueryVo announcementQueryVo) {
         Page<Announcement> announcementPage = new Page<>(announcementQueryVo.getPageNo(),
                 announcementQueryVo.getPageSize());
@@ -70,7 +70,7 @@ public class AnnouncementController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "添加公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:add')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:add')")
     public RespResult addAnnouncement(@Valid @RequestBody AnnouncementAddVo announcementAddVo) {
         Long userId = SecurityUtils.getUserId();
         Announcement announcement = new Announcement();
@@ -90,7 +90,7 @@ public class AnnouncementController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:update')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:update')")
     public RespResult updateAnnouncement(@Valid @RequestBody AnnouncementUdpVo announcementUdpVo) {
         Announcement announcement = new Announcement();
         BeanUtils.copyProperties(announcementUdpVo, announcement);
@@ -107,7 +107,7 @@ public class AnnouncementController {
      */
     @PutMapping("/play/{id}")
     @ApiOperation(value = "发布公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:play')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:play')")
     public RespResult playAnnouncement(@PathVariable Long id) {
         if (announcementService.playAnnouncement(id)) {
             return RespResult.ok().message("发布成功");
@@ -122,7 +122,7 @@ public class AnnouncementController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除公告")
-    @PreAuthorize("@Perms.hasPerm('admin:announcement:delete')")
+    //@PreAuthorize("@Perms.hasPerm('admin:announcement:delete')")
     public RespResult deleteAnnouncement(@PathVariable Long id) {
         if (announcementService.removeById(id)) {
             return RespResult.ok().message("删除成功");

@@ -44,7 +44,7 @@ public class UserController {
      * @return 查询结果
      */
     @GetMapping("/page")
-    @PreAuthorize("@Perms.hasPerm('admin:user:list')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:list')")
     @ApiOperation(value = "分页查询用户信息")
     public RespResult getUsers(@Valid UserQueryVo userQueryVo){
         return RespResult.ok();
@@ -56,7 +56,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping("/{id}")
-    @PreAuthorize("@Perms.hasPerm('admin:user:id')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:id')")
     @ApiOperation(value = "根据id获取用户")
     public RespResult getUserByUid(@PathVariable Long id) {
         User user = userService.getById(id);
@@ -72,7 +72,7 @@ public class UserController {
      * @return 用户信息
      */
     @GetMapping("/")
-    @PreAuthorize("@Perms.hasPerm('admin:user:email')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:email')")
     @ApiOperation(value = "根据邮箱获取用户")
     public RespResult getUserByUid(@RequestParam(value = "邮箱") String email) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -90,7 +90,7 @@ public class UserController {
      * @return 添加结果
      */
     @PostMapping("/add")
-    @PreAuthorize("@Perms.hasPerm('admin:user:add')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:add')")
     @ApiOperation(value = "添加用户")
     public RespResult addUser(@Valid @RequestBody UserAddVo userAddVo) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -123,7 +123,7 @@ public class UserController {
      * @return 更新结果
      */
     @PutMapping("/update")
-    @PreAuthorize("@Perms.hasPerm('admin:user:update')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:update')")
     @ApiOperation(value = "更新用户信息")
     public RespResult updateUser(@Valid @RequestBody UserUpdateVo userUpdateVo) {
         User user = userService.getById(userUpdateVo.getId());
@@ -157,7 +157,7 @@ public class UserController {
      * @return 封禁结果
      */
     @PutMapping("/ban/{id}")
-    @PreAuthorize("@Perms.hasPerm('admin:user:ban')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:ban')")
     @ApiOperation(value = "根据id封禁用户")
     public RespResult banUserByUid(@PathVariable Long id) {
         User verifyBanUser = userService.getById(id);
@@ -180,7 +180,7 @@ public class UserController {
      * @return 恢复结果
      */
     @PutMapping("/unblock/{id}")
-    @PreAuthorize("@Perms.hasPerm('admin:user:unblock')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:unblock')")
     @ApiOperation(value = "根据id恢复用户")
     public RespResult unblockUserByUid(@PathVariable Long id) {
         User verifyBanUser = userService.getById(id);
@@ -203,7 +203,7 @@ public class UserController {
      * @return 删除结果
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("@Perms.hasPerm('admin:user:delete')")
+    //@PreAuthorize("@Perms.hasPerm('admin:user:delete')")
     @ApiOperation(value = "根据id删除用户")
     public RespResult deleteUserByUid(@PathVariable Long id) {
         boolean result = userService.removeById(id);

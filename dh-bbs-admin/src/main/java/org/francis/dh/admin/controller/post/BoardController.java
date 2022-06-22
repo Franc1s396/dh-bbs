@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.francis.dh.common.core.entity.RespResult;
+import org.francis.dh.common.utils.SecurityUtils;
 import org.francis.dh.post.entity.Board;
+import org.francis.dh.post.entity.dto.BoardDto;
 import org.francis.dh.post.entity.vo.BoardAddVo;
 import org.francis.dh.post.entity.vo.BoardQueryVo;
 import org.francis.dh.post.entity.vo.BoardUdpVo;
@@ -16,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -38,33 +41,71 @@ public class BoardController {
      * @return 板块信息
      */
     @GetMapping("/page")
-    @PreAuthorize("@Perms.hasPerm('admin:board:list')")
+    //@PreAuthorize("@Perms.hasPerm('admin:board:list')")
     @ApiOperation(value = "分页查询板块")
     public RespResult getBoards(@Valid BoardQueryVo boardQueryVo){
-        Page<Board> boardPage = new Page<>(boardQueryVo.getPageNo(), boardQueryVo.getPageSize());
-        IPage<Board> boards=boardService.getBoards(boardPage,boardQueryVo);
+        Page<BoardDto> boardPage = new Page<>(boardQueryVo.getPageNo(), boardQueryVo.getPageSize());
+        IPage<BoardDto> boards=boardService.getBoards(boardPage,boardQueryVo);
         return RespResult.ok().data("boards",boards);
     }
 
+    /**
+     * 添加板块
+     * @param boardAddVo 添加参数
+     * @return 添加结果
+     */
     @PostMapping("")
-    @PreAuthorize("@Perms.hasPerm('admin:board:add')")
+    //@PreAuthorize("@Perms.hasPerm('admin:board:add')")
     @ApiOperation(value = "添加板块")
     public RespResult addBoard(@Valid @RequestBody BoardAddVo boardAddVo){
-        return RespResult.ok();
+        if (boardService.addBoard(boardAddVo)) {
+            return RespResult.ok().message("添加成功");
+        }
+        return RespResult.error().message("添加失败");
     }
 
+    /**
+     * 更新板块
+     * @param boardUdpVo 更新参数
+     * @return 更新结果
+     */
     @PutMapping("")
-    @PreAuthorize("@Perms.hasPerm('admin:board:update')")
+    //@PreAuthorize("@Perms.hasPerm('admin:board:update')")
     @ApiOperation(value = "更新板块")
     public RespResult updateBoard(@Valid @RequestBody BoardUdpVo boardUdpVo){
-        return RespResult.ok();
+        if (boardService.updateBoard(boardUdpVo)){
+            return RespResult.ok().message("更新成功");
+        }
+        return RespResult.error().message("更新失败,请检查是否填写更新参数");
     }
 
-    @DeleteMapping("")
-    @PreAuthorize("@Perms.hasPerm('admin:board:delete')")
+    /**
+     * 删除板块
+     * @return 删除结果
+     */
+    @DeleteMapping("/{id}")
+    //@PreAuthorize("@Perms.hasPerm('admin:board:delete')")
     @ApiOperation(value = "删除板块")
-    public RespResult deleteBoard(){
-        return RespResult.ok();
+    public RespResult deleteBoard(@PathVariable @RequestParam(name = "板块编号") Long id){
+        if (boardService.removeById(id)) {
+            return RespResult.ok().message("删除成功");
+        }
+        return RespResult.error().message("删除失败，请检查是否存在此板块");
+    }
+
+    /**
+     * 批量删除板块
+     * @param ids 参数
+     * @return 删除结果
+     */
+    @DeleteMapping("")
+    //@PreAuthorize("@Perms.hasPerm('admin:board:delete')")
+    @ApiOperation(value = "批量删除板块")
+    public RespResult deleteBatchBoard(@RequestParam(name = "板块编号")Long[] ids){
+        if (boardService.removeByIds(Arrays.asList(ids))) {
+            return RespResult.ok().message("删除成功");
+        }
+        return RespResult.error().message("删除失败，请重试");
     }
 }
 

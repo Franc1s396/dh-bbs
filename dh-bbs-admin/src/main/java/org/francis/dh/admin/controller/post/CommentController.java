@@ -2,6 +2,8 @@ package org.francis.dh.admin.controller.post;
 
 
 import io.swagger.annotations.Api;
+import org.francis.dh.post.service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/comment")
 @Api(tags = "评论接口")
 public class CommentController {
+    @Autowired
+    private CommentService commentService;
+
 
 }
 

@@ -1,7 +1,12 @@
 package org.francis.dh.post.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import org.francis.dh.post.entity.Board;
+import org.francis.dh.post.entity.dto.BoardDto;
+import org.francis.dh.post.entity.vo.BoardQueryVo;
 
 /**
  * <p>
@@ -13,4 +18,6 @@ import org.francis.dh.post.entity.Board;
  */
 public interface BoardMapper extends BaseMapper<Board> {
 
+    IPage<BoardDto> getBoards(@Param("boardPage") Page<BoardDto> boardPage,
+                              @Param("boardQueryVo") BoardQueryVo boardQueryVo);
 }

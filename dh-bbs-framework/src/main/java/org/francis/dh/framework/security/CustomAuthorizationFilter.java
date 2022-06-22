@@ -30,7 +30,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        LoginUser user = tokenService.getLoginUser(request);
+        LoginUser user = tokenService.getLoginUser(request,response);
         if (Objects.nonNull(user)) {
             tokenService.verifyToken(user);
             UsernamePasswordAuthenticationToken authenticationToken =

@@ -1,9 +1,8 @@
 package org.francis.dh.post.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,6 +26,7 @@ public class Board implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "板块编号")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "板块名字")
@@ -36,7 +36,9 @@ public class Board implements Serializable {
     private Long createUser;
 
     @ApiModelProperty(value = "逻辑删除")
-    private Boolean isDeleted;
+    @TableLogic
+    @TableField(value = "is_deleted")
+    private Boolean deleted;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

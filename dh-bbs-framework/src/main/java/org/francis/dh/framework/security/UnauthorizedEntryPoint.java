@@ -22,7 +22,7 @@ public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
     @Autowired
     private ObjectMapper objectMapper;
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(401);
         RespResult respBean = RespResult.error().message("认证失败,无法访问系统资源!");
