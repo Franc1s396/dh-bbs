@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.francis.dh.common.annotation.Log;
 import org.francis.dh.common.core.entity.RespResult;
 import org.francis.dh.common.core.entity.User;
+import org.francis.dh.common.enums.BusinessType;
+import org.francis.dh.common.enums.OperatorType;
 import org.francis.dh.system.entity.vo.UserAddVo;
 import org.francis.dh.system.entity.vo.UserQueryVo;
 import org.francis.dh.system.entity.vo.UserUpdateVo;
@@ -21,7 +24,7 @@ import javax.validation.Valid;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author francis
@@ -40,18 +43,20 @@ public class UserController {
 
     /**
      * 分页查询用户信息
+     *
      * @param userQueryVo 用户查询参数
      * @return 查询结果
      */
     @GetMapping("/page")
     //@PreAuthorize("@Perms.hasPerm('admin:user:list')")
     @ApiOperation(value = "分页查询用户信息")
-    public RespResult getUsers(@Valid UserQueryVo userQueryVo){
+    public RespResult getUsers(@Valid UserQueryVo userQueryVo) {
         return RespResult.ok();
     }
 
     /**
      * 根据id获取用户
+     *
      * @param id 用户id
      * @return 用户信息
      */
@@ -68,6 +73,7 @@ public class UserController {
 
     /**
      * 根据邮箱获取用户
+     *
      * @param email 邮箱
      * @return 用户信息
      */
@@ -86,6 +92,7 @@ public class UserController {
 
     /**
      * 添加用户
+     *
      * @param userAddVo 用户添加参数
      * @return 添加结果
      */
@@ -119,6 +126,7 @@ public class UserController {
 
     /**
      * 更新用户信息
+     *
      * @param userUpdateVo 用户更新参数
      * @return 更新结果
      */
@@ -153,6 +161,7 @@ public class UserController {
 
     /**
      * 封禁用户
+     *
      * @param id 用户id
      * @return 封禁结果
      */
@@ -161,7 +170,7 @@ public class UserController {
     @ApiOperation(value = "根据id封禁用户")
     public RespResult banUserByUid(@PathVariable Long id) {
         User verifyBanUser = userService.getById(id);
-        if (verifyBanUser.getUserEnabled()==1) {
+        if (verifyBanUser.getUserEnabled() == 1) {
             return RespResult.error().message("该用户已被封禁");
         }
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
@@ -176,6 +185,7 @@ public class UserController {
 
     /**
      * 恢复用户
+     *
      * @param id 用户id
      * @return 恢复结果
      */
@@ -184,7 +194,7 @@ public class UserController {
     @ApiOperation(value = "根据id恢复用户")
     public RespResult unblockUserByUid(@PathVariable Long id) {
         User verifyBanUser = userService.getById(id);
-        if (verifyBanUser.getUserEnabled()==0) {
+        if (verifyBanUser.getUserEnabled() == 0) {
             return RespResult.error().message("该用户未被封禁");
         }
         LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
@@ -199,6 +209,7 @@ public class UserController {
 
     /**
      * 删除用户
+     *
      * @param id 用户id
      * @return 删除结果
      */
