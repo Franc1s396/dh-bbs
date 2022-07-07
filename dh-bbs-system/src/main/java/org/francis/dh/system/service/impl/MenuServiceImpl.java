@@ -1,10 +1,12 @@
 package org.francis.dh.system.service.impl;
 
 import org.francis.dh.common.core.entity.Menu;
+import org.francis.dh.common.core.redis.CustomKeyGenerator;
 import org.francis.dh.system.mapper.MenuMapper;
 import org.francis.dh.system.service.MenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private MenuMapper menuMapper;
 
     @Override
+    @Cacheable(cacheNames = "cache",keyGenerator = "customKeyGenerator")
     public List<Menu> getMenusByUserId(Long userId) {
         List<Menu> menus=menuMapper.getMenusByUserId(userId);
         return menus.stream().filter(menu -> menu.getParentId() == 0)

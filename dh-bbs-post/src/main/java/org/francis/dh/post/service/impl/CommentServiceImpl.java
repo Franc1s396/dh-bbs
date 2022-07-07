@@ -26,7 +26,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private CommentMapper commentMapper;
 
     @Override
-    public IPage<CommentDto> getCommentByPId(Page<CommentDto> commentPage, CommentQueryVo commentQueryVo) {
+    public IPage<CommentDto> getCommentByPId(CommentQueryVo commentQueryVo) {
+        Page<CommentDto> commentPage = new Page<>(commentQueryVo.getPageNo(), commentQueryVo.getPageSize());
         return commentMapper.getCommentByPId(commentPage,commentQueryVo);
     }
 }

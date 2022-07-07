@@ -2,6 +2,7 @@ package org.francis.dh.post.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.francis.dh.common.core.redis.CustomKeyGenerator;
 import org.francis.dh.common.utils.SecurityUtils;
 import org.francis.dh.post.entity.Post;
 import org.francis.dh.post.entity.dto.PostDto;
@@ -12,6 +13,7 @@ import org.francis.dh.post.service.PostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +31,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     private PostMapper postMapper;
 
     @Override
-    public IPage<PostDto> getPostPage(Page<PostDto> postPage, PostQueryVo postQueryVo) {
+    @Cacheable(cacheNames = "cache",keyGenerator = "customKeyGenerator")
+    public IPage<PostDto> getPostPage(PostQueryVo postQueryVo) {
+        Page<PostDto> postPage = new Page<>(postQueryVo.getPageNo(), postQueryVo.getPageSize());
         IPage<PostDto> postList = postMapper.getPostPage(postPage, postQueryVo);
         postList.getRecords().forEach(postDto -> {
             if (postDto.getContent().length()>=30) {

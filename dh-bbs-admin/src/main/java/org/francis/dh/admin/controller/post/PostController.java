@@ -45,8 +45,7 @@ public class PostController {
     //@PreAuthorize("@Perms.hasPerm('admin:post:list')")
     @ApiOperation("分页查询帖子")
     public RespResult getPostPage(@Valid PostQueryVo postQueryVo){
-        Page<PostDto> postPage = new Page<>(postQueryVo.getPageNo(), postQueryVo.getPageSize());
-        IPage<PostDto> postList=postService.getPostPage(postPage,postQueryVo);
+        IPage<PostDto> postList=postService.getPostPage(postQueryVo);
         return RespResult.ok().data("postList",postList);
     }
 

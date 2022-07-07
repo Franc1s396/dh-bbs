@@ -43,13 +43,9 @@ public class CommentReplyController {
     //@PreAuthorize("@Perms.hasPerm('admin:comment:reply:list')")
     @ApiOperation("分页查询评论回复")
     public RespResult getCommentReplyPage(CommentReplyQueryVo commentReplyQueryVo) {
-        Page<CommentReply> commentReplyPage = new Page<>(commentReplyQueryVo.getPageNo(),
-                commentReplyQueryVo.getPageSize());
-        LambdaQueryWrapper<CommentReply> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(CommentReply::getCommentId, commentReplyQueryVo.getCommentId());
 
         IPage<CommentReply> commentReplyList = commentReplyService
-                .page(commentReplyPage, queryWrapper);
+                .getCommentReplyPage(commentReplyQueryVo);
         return RespResult.ok().data("commentReplyList", commentReplyList);
     }
 

@@ -20,11 +20,10 @@ public interface PostService extends IService<Post> {
 
     /**
      * 分页查询帖子
-     * @param postPage 分页参数
      * @param postQueryVo 查询参数
      * @return 帖子列表
      */
-    IPage<PostDto> getPostPage(Page<PostDto> postPage, PostQueryVo postQueryVo);
+    IPage<PostDto> getPostPage(PostQueryVo postQueryVo);
 
     /**
      * 根据id查询帖子

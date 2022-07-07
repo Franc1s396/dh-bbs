@@ -39,8 +39,7 @@ public class CommentController {
     //@PreAuthorize("@Perms.hasPerm('admin:comment:list')")
     @ApiOperation("分页查询评论")
     public RespResult getCommentByPId(CommentQueryVo commentQueryVo){
-        Page<CommentDto> commentPage = new Page<>(commentQueryVo.getPageNo(), commentQueryVo.getPageSize());
-        IPage<CommentDto> commentList=commentService.getCommentByPId(commentPage,commentQueryVo);
+        IPage<CommentDto> commentList=commentService.getCommentByPId(commentQueryVo);
         return RespResult.ok().data("commentList",commentList);
     }
 

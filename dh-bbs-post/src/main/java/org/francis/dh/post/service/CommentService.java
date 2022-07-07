@@ -19,9 +19,8 @@ public interface CommentService extends IService<Comment> {
 
     /**
      * 根据id分页查询帖子评论
-     * @param commentPage 分页参数
      * @param commentQueryVo 查询参数
      * @return 评论信息
      */
-    IPage<CommentDto> getCommentByPId(Page<CommentDto> commentPage, CommentQueryVo commentQueryVo);
+    IPage<CommentDto> getCommentByPId(CommentQueryVo commentQueryVo);
 }

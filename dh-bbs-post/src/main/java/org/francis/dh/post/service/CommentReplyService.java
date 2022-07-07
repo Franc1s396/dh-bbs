@@ -16,4 +16,5 @@ import org.francis.dh.post.entity.vo.CommentReplyQueryVo;
  */
 public interface CommentReplyService extends IService<CommentReply> {
 
+    IPage<CommentReply> getCommentReplyPage(CommentReplyQueryVo commentReplyQueryVo);
 }

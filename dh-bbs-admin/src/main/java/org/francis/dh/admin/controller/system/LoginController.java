@@ -64,31 +64,6 @@ public class LoginController {
     }
 
     /**
-     * 注册
-     * @param registerBody 注册参数
-     * @return 注册结果
-     */
-    @ApiOperation(value = "注册")
-    @PostMapping("/register")
-    public RespResult register(@Valid @RequestBody RegisterBody registerBody){
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getEmail,registerBody.getEmail());
-        if (userService.getOne(queryWrapper)!=null) {
-            return RespResult.error().message("邮箱已被占用");
-        }
-        queryWrapper.clear();
-        queryWrapper.eq(User::getPhone,registerBody.getPhone());
-        if (userService.getOne(queryWrapper)!=null) {
-            return RespResult.error().message("手机号码已被占用");
-        }
-        User user = new User();
-        BeanUtils.copyProperties(registerBody,user);
-        user.setPassword(passwordEncoder.encode(registerBody.getPassword()));
-        userService.save(user);
-        return RespResult.ok().message("注册成功");
-    }
-
-    /**
      * 验证码
      * @param response 响应类
      * @param uuid 唯一标识
