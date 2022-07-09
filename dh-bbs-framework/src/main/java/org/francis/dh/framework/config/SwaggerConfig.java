@@ -20,21 +20,14 @@ import java.util.function.Predicate;
 public class SwaggerConfig {
     @Bean
     public Docket docket() {
-     /*   ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<Parameter>();
-        ticketPar.name("Authorization").description("token")
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .required(true).build();
-        pars.add(ticketPar.build());*/
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("dh-mall电商系统接口文档")
                         .termsOfServiceUrl("francis")
                         .version("1.0")
                         .build())
-//                .globalOperationParameters(pars)
                 .select()
-                .paths(Predicate.not(PathSelectors.regex("/error.*")))
+                .paths(PathSelectors.regex("/error.*").negate())
                 .paths(PathSelectors.any())
                 .build();
         return docket;
