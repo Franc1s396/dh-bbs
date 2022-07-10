@@ -1,14 +1,19 @@
 package org.francis.dh.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.francis.dh.common.core.entity.LoginUser;
 import org.francis.dh.common.core.entity.User;
 import org.francis.dh.common.exception.ServiceException;
 import org.francis.dh.common.utils.StringUtils;
+import org.francis.dh.system.entity.vo.UserQueryVo;
 import org.francis.dh.system.mapper.UserMapper;
 import org.francis.dh.system.service.PermsService;
 import org.francis.dh.system.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,5 +50,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private UserDetails createLoginUser(User user) {
         return new LoginUser(user.getId(), user, permsService.getPermissions(user));
+    }
+
+    @Override
+    public IPage<User> getUsersPage(UserQueryVo userQueryVo) {
+        Page<User> userPage = new Page<>(userQueryVo.getPageNo(), userQueryVo.getPageSize());
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        User user = new User();
+        BeanUtils.copyProperties(userQueryVo,user);
+        queryWrapper.setEntity(user);
+        /*queryWrapper.eq(User::getId,userQueryVo.getId())
+                .like(User::getNickName,userQueryVo.getNickName())
+                .eq(User::getEmail,userQueryVo.getEmail())
+                .eq(User::getPhone,userQueryVo.getPhone())
+                .eq(User::getSex,userQueryVo.getSex());*/
+        return this.page(userPage, queryWrapper);
     }
 }

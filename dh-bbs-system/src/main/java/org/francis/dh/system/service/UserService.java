@@ -1,7 +1,9 @@
 package org.francis.dh.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.francis.dh.common.core.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.francis.dh.system.entity.vo.UserQueryVo;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserService extends IService<User> {
 
+    IPage<User> getUsersPage(UserQueryVo userQueryVo);
 }

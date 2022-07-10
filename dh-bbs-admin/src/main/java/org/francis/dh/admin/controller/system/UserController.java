@@ -3,6 +3,7 @@ package org.francis.dh.admin.controller.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.francis.dh.common.annotation.Log;
@@ -50,8 +51,9 @@ public class UserController {
     @GetMapping("/page")
     //@PreAuthorize("@Perms.hasPerm('admin:user:list')")
     @ApiOperation(value = "分页查询用户信息")
-    public RespResult getUsers(@Valid UserQueryVo userQueryVo) {
-        return RespResult.ok();
+    public RespResult getUsersPage(@Valid UserQueryVo userQueryVo) {
+        IPage<User> user=userService.getUsersPage(userQueryVo);
+        return RespResult.ok().data("user",user);
     }
 
     /**
