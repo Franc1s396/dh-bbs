@@ -54,10 +54,10 @@ public class PostController {
      * @param id 帖子id
      * @return 帖子信息
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     //@PreAuthorize("@Perms.hasPerm('admin:post:id')")
     @ApiOperation("根据id查询帖子")
-    public RespResult getPostById(@RequestParam(name = "帖子id")@PathVariable Long id){
+    public RespResult getPostById(@RequestParam(name = "帖子id") Long id){
         PostDto post = postService.getPostById(id);
         if (post==null) {
             return RespResult.error().message("帖子不存在");
@@ -70,7 +70,7 @@ public class PostController {
      * @param postAddVo 添加参数
      * @return 添加结果
      */
-    @PostMapping("")
+    @PostMapping("/add")
 //    @PreAuthorize("@Perms.hasPerm('admin:post:add')")
     @ApiOperation("添加帖子")
     public RespResult addPost(@Valid @RequestBody PostAddVo postAddVo){
@@ -85,7 +85,7 @@ public class PostController {
      * @param postUpdateVo 更新参数
      * @return 更新结果
      */
-    @PutMapping("")
+    @PutMapping("/update")
 //    @PreAuthorize("@Perms.hasPerm('admin:post:update')")
     @ApiOperation("更新管理员帖子")
     public RespResult updatePost(@Valid @RequestBody PostUpdateVo postUpdateVo){
@@ -105,10 +105,10 @@ public class PostController {
      * @param postId 帖子编号
      * @return 置顶结果
      */
-    @PutMapping("/top/{postId}")
+    @PutMapping("/top")
 //    @PreAuthorize("@Perms.hasPerm('admin:post:top')")
     @ApiOperation("置顶帖子")
-    public RespResult topPostByPId(@RequestParam(name = "帖子编号")@PathVariable Long postId){
+    public RespResult topPostByPId(@RequestParam(name = "帖子编号") Long postId){
         if (postService.getById(postId)==null) {
             return RespResult.error().message("帖子不存在");
         }
@@ -126,10 +126,10 @@ public class PostController {
      * @param id 帖子编号
      * @return 返回删除结果
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/remove")
 //    @PreAuthorize("@Perms.hasPerm('admin:post:top')")
     @ApiOperation("删除帖子")
-    public RespResult deletePostByPId(@RequestParam(name = "帖子编号")@PathVariable Long id){
+    public RespResult deletePostByPId(@RequestParam(name = "帖子编号") Long id){
         if (postService.removeById(id)) {
             return RespResult.ok().message("删除成功");
         }

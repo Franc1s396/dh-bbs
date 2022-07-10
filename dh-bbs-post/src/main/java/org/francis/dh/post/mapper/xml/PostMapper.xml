@@ -15,18 +15,18 @@
     </resultMap>
     <select id="getPostPage" resultMap="PostPage">
         SELECT bp.id,
-               bp.user_id,
-               su.nick_name,
-               bp.board_id,
-               bb.name AS board_name,
-               bp.title,
-               LEFT(bp.content,50) AS content,
-               bp.cover,
-               bp.is_top,
-               bp.gmt_create
+        bp.user_id,
+        su.nick_name,
+        bp.board_id,
+        bb.name AS board_name,
+        bp.title,
+        LEFT(bp.content,50) AS content,
+        bp.cover,
+        bp.is_top,
+        bp.gmt_create
         FROM b_post bp
-                 LEFT JOIN sys_user su ON su.id = bp.user_id
-                 LEFT JOIN b_board bb ON bb.id = bp.board_id
+        LEFT JOIN sys_user su ON su.id = bp.user_id
+        LEFT JOIN b_board bb ON bb.id = bp.board_id
         WHERE bp.is_deleted=0 AND su.is_deleted=0 AND bb.is_deleted=0
         <if test="postQueryVo.id!=null">
             AND bp.id=#{postQueryVo.id}
@@ -62,6 +62,9 @@
         FROM b_post bp
                  LEFT JOIN sys_user su ON su.id = bp.user_id
                  LEFT JOIN b_board bb ON bb.id = bp.board_id
-        WHERE bp.is_deleted=0 AND su.is_deleted=0 AND bb.is_deleted=0
+        WHERE bp.is_deleted = 0
+          AND su.is_deleted = 0
+          AND bb.is_deleted = 0
+          AND bp.id = #{id}
     </select>
 </mapper>

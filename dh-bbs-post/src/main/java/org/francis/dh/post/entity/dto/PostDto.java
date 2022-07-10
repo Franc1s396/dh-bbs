@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @ApiModel("帖子DTO")
 @Data
-public class PostDto {
+public class PostDto implements Serializable {
     @ApiModelProperty(value = "帖子编号")
     private Long id;
 

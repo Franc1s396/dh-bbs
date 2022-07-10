@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @ApiModel("板块审核DTO")
 @Data
-public class BoardAuditDto {
+public class BoardAuditDto implements Serializable {
     @ApiModelProperty(value = "板块审核编号")
     private Long id;
 

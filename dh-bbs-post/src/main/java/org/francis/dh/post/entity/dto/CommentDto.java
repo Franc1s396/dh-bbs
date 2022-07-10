@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @ApiModel("评论DTO")
 @Data
-public class CommentDto {
+public class CommentDto implements Serializable {
     @ApiModelProperty(value = "帖子评论编号")
     private Long id;
 
