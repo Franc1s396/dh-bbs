@@ -33,7 +33,7 @@ public class PostLike implements Serializable {
     private Long postId;
 
     @ApiModelProperty(value = "帖子点赞数")
-    private Integer like;
+    private Integer postLike;
 
 
 }

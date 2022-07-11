@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PostLikeService extends IService<PostLike> {
 
+    Integer getPostLikeTotalByPid(Long postId);
 }

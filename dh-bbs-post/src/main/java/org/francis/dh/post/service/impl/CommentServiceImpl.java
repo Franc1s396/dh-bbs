@@ -1,5 +1,6 @@
 package org.francis.dh.post.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.francis.dh.post.entity.Comment;
@@ -29,5 +30,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public IPage<CommentDto> getCommentByPId(CommentQueryVo commentQueryVo) {
         Page<CommentDto> commentPage = new Page<>(commentQueryVo.getPageNo(), commentQueryVo.getPageSize());
         return commentMapper.getCommentByPId(commentPage,commentQueryVo);
+    }
+
+    @Override
+    public Integer getCommentTotalByPid(Long postId) {
+        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Comment::getPostId,postId);
+        return this.count(queryWrapper);
     }
 }

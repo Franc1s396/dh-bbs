@@ -43,6 +43,13 @@ public class CommentController {
         return RespResult.ok().data("commentList",commentList);
     }
 
+    @GetMapping("/total")
+    @ApiOperation("帖子评论总数")
+    public RespResult getCommentTotalByPid(Long postId){
+        Integer count=commentService.getCommentTotalByPid(postId);
+        return RespResult.ok().data("count",count);
+    }
+
     @DeleteMapping("/{commentId}")
     //@PreAuthorize("@Perms.hasPerm('admin:comment:delete')")
     @ApiOperation("删除评论")

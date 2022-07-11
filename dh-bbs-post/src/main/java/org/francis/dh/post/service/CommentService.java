@@ -23,4 +23,6 @@ public interface CommentService extends IService<Comment> {
      * @return 评论信息
      */
     IPage<CommentDto> getCommentByPId(CommentQueryVo commentQueryVo);
+
+    Integer getCommentTotalByPid(Long postId);
 }
