@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public Docket docket() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        .title("dh-mall电商系统接口文档")
+                        .title("dh-bbs论坛后台管理系统接口文档")
                         .termsOfServiceUrl("francis")
                         .version("1.0")
                         .build())
